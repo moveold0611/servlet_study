@@ -4,13 +4,37 @@
   <artifactId>servlet_study_ldh</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  
+  <dependencies>  
+	  
+	<dependency>	<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.18.28</version>
+	    <scope>provided</scope>
+	</dependency>
+			
+	<dependency>	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.10.1</version>
+	</dependency>
+
+	<dependency> <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jsp-api -->
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-jsp-api</artifactId>
+	    <version>9.0.80</version>
+	</dependency>
+	
+  </dependencies>
+  
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>17</release>
+          <release>11</release>
         </configuration>
       </plugin>
       <plugin>
