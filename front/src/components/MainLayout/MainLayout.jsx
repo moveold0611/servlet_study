@@ -11,6 +11,7 @@ const SLayout = css`
 `;
 
 const SContainer = css`
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;

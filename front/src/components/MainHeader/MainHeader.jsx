@@ -16,9 +16,10 @@ function MainHeader(props) {
 
     return (
         <div css={SLayout}>
-            <Link to={"/"}>메인</Link>
+            <Link to={"/main"}>메인</Link>
             <Link to={"/signin"}>로그인</Link>
             <Link to={"/signup"}>회원가입</Link>
+            <Link to={"/async"}>비동기</Link>
         </div>
     );
 }

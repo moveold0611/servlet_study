@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const SInputLayout = css`
     display: flex;
@@ -20,7 +20,7 @@ function Signup(props) {
 
     const naivgate = useNavigate();
 
-    const [ singupUser, setSignupUser ] = useState({
+    const [ signupUser, setSignupUser ] = useState({
         username: "",
         password: "",
         name: "",
@@ -29,7 +29,7 @@ function Signup(props) {
 
     const handleInputChange = (e) => {
         setSignupUser({
-            ...singupUser,
+            ...signupUser,
             [e.target.name]: e.target.value
         });
     }
@@ -37,20 +37,49 @@ function Signup(props) {
     const handleSubmitClick = () => {
         const option = {
             params: {
-                username: singupUser.username
+                username: signupUser.username
             }
         }
 
-        axios.get("http://localhost:8080/servlet_study_ldh/auth/signup/duplicated/username", option)
-        .then((response) => {
-            axios.post("http://localhost:8080/servlet_study_ldh/auth/signup", singupUser)
-            .then((response) => {
-                alert(response.data);
-                naivgate("/signin");
-            })
-        }).catch((error) => {
-            alert("중복된 아이디입니다.");
-        });
+        const signUp = async () => {
+            let response = await axios.get("http://localhost:8080/servlet_study_ldh/auth/signup/duplicated/username", option);
+                if(response.data) { // 반드시 위 코드가 응답받은 다음에 실행되어야 한다.
+                                    // (await으로 동기처리)
+                    alert("중복된 아이디입니다.");
+                    console.log("signup fail")
+                    return;
+                }
+            alert("사용 가능한 아이디입니다.");  
+            try {
+                response = await axios.post("http://localhost:8080/servlet_study_ldh/auth/signup", signupUser);
+                if(!response.data) {
+                    throw new Error(response);
+                }
+                alert("회원가입 성공")
+                naivgate("/signin")
+                console.log("signup success")
+            } catch (error) {
+                console.log(error);
+                console.log("signup error")
+                return;
+            }
+        }
+        signUp();
+
+
+        // const duplicateUsername = axios.get("http://localhost:8080/servlet_study_ldh/auth/signup/duplicated/username", option)
+        // duplicateUsername
+        // .then((response) => {
+        //     console.log(response);
+        //     const isDuplicateUsername = response.data;
+        //     if(isDuplicateUsername) {
+        //         alert("중복된 아이디입니다.");
+        //     }else {
+        //         alert("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ.");
+        //     }
+        // }).catch((error) => {
+        //     console.log("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ")
+        // });
     }
 
     return (
