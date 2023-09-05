@@ -22,11 +22,10 @@ public class DuplicatedUsername extends HttpServlet {
 		for(User user : UserData.userList) {
 			if(Objects.equals(user.getUsername(), username)) {
 				responseData = true;
-				ResponseUtil.response(response).of(200).body(true);
-				return;
+				break;
 			}
 		}
-		ResponseUtil.response(response).of(200).body(false);
+		ResponseUtil.response(response).of(200).body(responseData);
 	}
 
 }
