@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import data.UserData;
 import entity.User;
+import security.Authentication;
 import security.SecurityContextHolder;
 import utils.JsonParseUtil;
 import utils.ResponseUtil;
@@ -30,19 +31,34 @@ public class ProfileServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, Object> profileMap = JsonParseUtil.toMap(request.getInputStream());
+		Map<String, Object> profileMap = 
+				JsonParseUtil.toMap(request.getInputStream());
 		
-		User oldUser = SecurityContextHolder.findAuthenticationByToken
-				(request.getHeader("token")).getUser(); 
+		
+		Authentication authentication = SecurityContextHolder.findAuthenticationByToken
+				(request.getHeader("Authorization")); 
+		User oldUser = authentication.getUser(); 
 		
 		List<User> userList = UserData.userList;
 		User user = User.builder()
-				.userId(userList.size() + 1)
+				.userId(oldUser.getUserId())
 				.username((String)profileMap.get("username"))
 				.password((String)profileMap.get("password"))
 				.name((String)profileMap.get("name"))
 				.email((String)profileMap.get("email"))
 				.build();
+		
+		for(int i = 0; i < userList.size(); i++) {
+			if(userList.get(i).getUserId() == user.getUserId()) {
+				userList.set(i, user);
+				authentication.setUser(user);
+				ResponseUtil.response(response).of(200).body(true);
+			}
+		}
+		ResponseUtil.response(response).of(200).body(false);
+		
+		
+		
 	}
 
 	

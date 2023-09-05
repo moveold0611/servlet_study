@@ -28,12 +28,9 @@ public class SecurityFilter extends HttpFilter implements Filter {
 		String[] antMachers = {"/auth"};
 		String token = req.getHeader("Authorization");
 		System.out.println(token);
+		System.out.println(req.getMethod().equalsIgnoreCase("options"));
 		
-		if(!req.getMethod().equalsIgnoreCase("options") && !SecurityContextHolder.isAuthenticated(token)) {
-			ResponseUtil.response(resp).of(401).body("인증 실패");
-			return;
-		}
-				
+		
 		// 인증이 필요 없는 경우
 		for(String antMacher : antMachers) {
 			if(uri.startsWith(rootPath + antMacher)) {
@@ -41,6 +38,13 @@ public class SecurityFilter extends HttpFilter implements Filter {
 				return;
 			}
 		}
+				
+		if(!req.getMethod().equalsIgnoreCase("options") && !SecurityContextHolder.isAuthenticated(token)) {
+			ResponseUtil.response(resp).of(401).body("인증 실패");
+			return;
+		}
+	
+		
 		
 		chain.doFilter(request, response);
 	}
