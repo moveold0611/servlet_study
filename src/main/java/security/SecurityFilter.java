@@ -27,8 +27,8 @@ public class SecurityFilter extends HttpFilter implements Filter {
 		String uri = req.getRequestURI();
 		String[] antMachers = {"/auth"};
 		String token = req.getHeader("Authorization");
-		System.out.println(token);
-		System.out.println(req.getMethod().equalsIgnoreCase("options"));
+
+		
 		
 		
 		// 인증이 필요 없는 경우

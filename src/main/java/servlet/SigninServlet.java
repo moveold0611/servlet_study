@@ -30,7 +30,7 @@ public class SigninServlet extends HttpServlet {
 		= JsonParseUtil.toMap(req.getInputStream());
 		Map<String, String> respData = new HashMap<>();
 		
-		System.out.println(signinUser);
+
 		for(User user : UserData.userList) {
 			if(Objects.equals(user.getUsername(), signinUser.get("username")) 
 					&& Objects.equals(user.getPassword(), signinUser.get("password"))) {

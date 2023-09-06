@@ -32,7 +32,7 @@ public class SignupServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Map<String, Object> userMap = JsonParseUtil.toMap(request.getInputStream());
-		System.out.println(userMap);
+
 		
 		List<User> userList = UserData.userList;
 		User user = User.builder()
